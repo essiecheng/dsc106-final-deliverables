@@ -475,7 +475,7 @@
   }
   .intro-page {
     font-size: 20px;
-    background-image: url('b.jpeg');
+    background-image: 'b.jpeg';
     background-size: cover;
     background-position: center;
   }
@@ -561,7 +561,7 @@
   }
 
   .conclusion {
-    background-image: url('b.jpeg');
+    background-image: 'b.jpeg';
     background-size: cover;
     background-position: center;
   }
