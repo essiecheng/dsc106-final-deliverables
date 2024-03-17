@@ -244,7 +244,8 @@
       <p class="instructions">
         Then scroll to the next section to reveal the 5 sports, and the
         corresponding athletes, that show the most potential and make the best
-        candidates for the U.S. to focus on and invest in in the future.
+        candidates for the U.S. to focus on and invest in in the future. Scroll mouse to middle of the page 
+        and click the links for more information.
       </p>
       <label for="show" style="display: inline;">Show Line:</label>
       <input id="show" type="checkbox" bind:checked={show} />

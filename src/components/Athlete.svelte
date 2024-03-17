@@ -205,7 +205,7 @@
     height: 100vh;
     max-height: 100vh;
     position: relative;
-    background-image: url('fischer.png');
+    background-image: url('/fischer.png');
     background-size: 48%;
     background-repeat: no-repeat;
     background-position: 0% 30%;
@@ -222,7 +222,7 @@
     height: 100vh;
     max-height: 100vh;
     position: relative;
-    background-image: url('thompson.png');
+    background-image: url('/thompson.png');
     background-size: 30%;
     background-repeat: no-repeat;
     background-position: 5% 5%;
@@ -240,7 +240,7 @@
     max-height: 100vh;
     overflow: hidden;
     position: relative;
-    background-image: url('phelps.png');
+    background-image: url('/phelps.png');
     background-size: 60%;
     background-repeat: no-repeat;
     background-position: -35% 0%;
