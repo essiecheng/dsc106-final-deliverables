@@ -12,7 +12,6 @@
     usa,
   } from './nineData.js';
 
-  // Define an array of datasets
   const datasets = [
     { name: 'Athens', data: athens },
     { name: 'Barcelona', data: barcelona },
@@ -24,18 +23,15 @@
     { name: 'United States', data: usa },
   ];
 
-  // Chart dimensions and margins
   const width = 628;
   const height = 400;
-  const marginTop = 10;
+  const marginTop = 30;
   const marginRight = 30;
   const marginBottom = 50;
   const marginLeft = 80;
 
-  // Selected dataset
   let selectedDataset = datasets[0];
 
-  // Function to create scales
   function createScales(data) {
     const xScale = d3
       .scaleLinear()
@@ -50,7 +46,6 @@
     return { xScale, yScale };
   }
 
-  // Function to create line generator
   function createLineGenerator(xScale, yScale) {
     return d3
       .line()
@@ -58,17 +53,15 @@
       .y((d) => yScale(d.count));
   }
 
-  // Function to update the line path with transition
   function updateLine() {
     const lineGenerator = createLineGenerator(
       createScales(selectedDataset.data).xScale,
       createScales(selectedDataset.data).yScale
     );
 
-    // Select the line path and apply transition
     d3.select('.line')
       .transition()
-      .duration(750) // Set the duration of the transition
+      .duration(750)
       .attr('d', lineGenerator(selectedDataset.data));
   }
 
@@ -78,24 +71,26 @@
 
   function updateUSACircleAndText() {
     const usaTotalCount = usa.reduce((total, city) => total + city.count, 0);
-
-    // Update red circle
+    // update circle
     const redCircle = d3.select('.usa-circle');
-    redCircle.attr('cx', createScales(usa).xScale(usa[0].year)); // Assuming there's only one year data for "USA"
-    redCircle.attr('cy', createScales(usa).yScale(usaTotalCount)); // Using the total count for "USA"
+    redCircle.attr('cx', createScales(usa).xScale(usa[0].year));
+    redCircle.attr('cy', createScales(usa).yScale(usaTotalCount));
 
-    // Update associated text
+    // Update text
     const text = d3.select('.usa-count');
-    text.text(usaTotalCount); // Displaying the total count for "USA"
-    text.attr('x', createScales(usa).xScale(usa[0].year)); // Assuming there's only one year data for "USA"
-    text.attr('y', createScales(usa).yScale(usaTotalCount) - 10); // Adjusting the position of the text
+    text.text(usaTotalCount);
+    text.attr('x', createScales(usa).xScale(usa[0].year));
+    text.attr('y', createScales(usa).yScale(usaTotalCount) - 10);
   }
-  // Call updateLine function on component mount
   onMount(updateLine);
 </script>
 
-<div style="margin-top: 80px;"> <!-- Add margin-top to move the button down -->
-  <select class = 'selection-button' bind:value={selectedDataset} on:change={updateLine}>
+<div style="margin-top: 10px;">
+  <select
+    class="selection-button"
+    bind:value={selectedDataset}
+    on:change={updateLine}
+  >
     {#each datasets as dataset}
       <option value={dataset}>{dataset.name}</option>
     {/each}
@@ -110,6 +105,7 @@
   style="max-width: 100%; height: auto;"
 >
   <g>
+    <!-- x axis -->
     <line
       stroke="currentColor"
       x1={marginLeft - 6}
@@ -139,6 +135,7 @@
   </g>
 
   <g>
+    <!-- y axis line -->
     {#each createScales(selectedDataset.data).yScale.ticks() as tick}
       {#if tick !== 0}
         <line
@@ -159,6 +156,7 @@
         />
       {/if}
 
+      <!-- y axis  -->
       <text
         fill="currentColor"
         text-anchor="end"
@@ -170,24 +168,26 @@
       </text>
     {/each}
 
+    <!-- y axis label -->
     <text
-    fill="purple"
-    transform="rotate(-90)"
-    text-anchor="middle"
-    x={-marginLeft - 130} 
-    y={height / 10}
-  >
-    Total Medal Count
-  </text>
+      fill="purple"
+      transform="rotate(-90)"
+      text-anchor="middle"
+      x={-marginLeft - 130}
+      y={height / 10}
+    >
+      Total Medal Count
+    </text>
 
+    <!-- x axis label -->
     <text fill="purple" text-anchor="middle" x={width / 2 + 25} y={height - 5}>
       Year
     </text>
-
   </g>
 
   <path class="line" fill="none" stroke="steelblue" stroke-width="1.5" />
 
+  <!-- deal with edge case: usa -->
   {#each selectedDataset.data as point}
     {#if selectedDataset.name === 'United States' && (point.city === 'Los Angeles' || point.city === 'Atlanta')}
       <circle
@@ -236,13 +236,10 @@
   }
 
   .selection-button {
-  
-  border: 1px solid #ccc; /* Add border */
-  border-radius: 5px; /* Add border radius */
-  background-color: #f0f0f0; /* Add background color */
-  color: #333; /* Add text color */
-  cursor: pointer; /* Change cursor on hover */
-}
-
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+  }
 </style>
-

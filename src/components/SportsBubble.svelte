@@ -3,18 +3,26 @@
   import * as d3 from 'd3';
   import { bubbleData } from './bubbleData.js';
 
-  const width = 500;
-  const height = 500;
-
   let currentYear = 1976;
   let isPlaying = false;
   let animationTimer;
 
   const annotations = [
-    // { year: 1976, annotations: [
-    //   { text: "Annotation 1 for 1976", x: 50, y: 50 },
-    //   { text: "Annotation 2 for 1976", x: 100, y: 100 }
-    // ]},
+    {
+      year: 1976,
+      annotations: [
+        {
+          text: 'United States got the most medals in swimming!',
+          x: 150,
+          y: 100,
+        },
+        {
+          text: '12 out of 13 gold medalists set the world record!',
+          x: 150,
+          y: 160,
+        },
+      ],
+    },
     {
       year: 1980,
       annotations: [
@@ -40,7 +48,7 @@
       year: 1988,
       annotations: [
         {
-          text: 'Florence Griffith Joyner , winning three gold medals and one silver',
+          text: 'Florence Griffith Joyner won three gold medals and one silver',
           x: 375,
           y: 150,
         },
@@ -76,10 +84,16 @@
         },
       ],
     },
-    // { year: 2004, annotations: [
-    //   { text: "Annotation 1 for 1984", x: 150, y: 150 },
-    //   { text: "Annotation 2 for 1984", x: 200, y: 200 }
-    // ]},
+    {
+      year: 2004,
+      annotations: [
+        {
+          text: 'Michael Phelphs set the 3 new Olympic Records and 2 World Records!',
+          x: 150,
+          y: 100,
+        },
+      ],
+    },
     {
       year: 2008,
       annotations: [
@@ -95,7 +109,7 @@
   function updateCircles(currentYear) {
     const svg = d3.select('#circles');
 
-    // Update circles based on the current year's data
+    // update circle
     svg
       .selectAll('circle')
       .data(bubbleData[currentYear])
@@ -104,19 +118,19 @@
       .attr('cy', (d) => d.y)
       .attr('fill', (d) => d.color);
 
-    // Update text labels based on the current year's data
+    // update text
     svg
       .selectAll('.source')
       .data(bubbleData[currentYear])
       .attr('x', (d) => d.x)
-      .attr('y', (d) => d.y) // Positioned in the middle of the circle
+      .attr('y', (d) => d.y)
       .text((d) => d.source)
       .style('font-family', 'times new roman')
       .style('font-size', '14px')
       .attr('text-anchor', 'middle')
       .attr('dy', '0.35em');
 
-    // Add or update text labels for additional information
+    // update label & additional info
     const additionalInfo = svg
       .selectAll('.additional-info')
       .data(bubbleData[currentYear]);
@@ -126,7 +140,7 @@
       .append('text')
       .attr('class', 'additional-info')
       .attr('x', (d) => d.x)
-      .attr('y', (d) => d.y + Math.sqrt(d.val) / Math.PI + 15) // Positioned below the circle
+      .attr('y', (d) => d.y + Math.sqrt(d.val) / Math.PI + 15)
       .text((d) => `${currentYear}, ${d.val / 1000} Medals`)
       .style('font-family', 'times new roman')
       .style('font-size', '16px')
@@ -135,97 +149,60 @@
 
     additionalInfo
       .attr('x', (d) => d.x)
-      .attr('y', (d) => d.y + Math.sqrt(d.val) / Math.PI + 15) // Positioned below the circle
+      .attr('y', (d) => d.y + Math.sqrt(d.val) / Math.PI + 15)
       .text((d) => `${currentYear}, ${d.val / 1000} Medals`);
   }
 
-  // function addAnnotations(year) {
-  //   const svg = d3.select('#circles');
-  //   annotations.forEach((annotation) => {
-  //     if (annotation.year === year) {
-  //       annotation.annotations.forEach((a) => {
-  //         const { text, x, y } = a;
-  //         const annotationGroup = svg.append('g').attr('class', 'annotation');
-  //         annotationGroup
-  //           // .append('line')
-  //           .attr('x1', x)
-  //           .attr('y1', y)
-  //           .attr('x2', x)
-  //           .attr('y2', y - 50)
-  //           .attr('stroke', 'black');
-  //         annotationGroup
-  //           .append('text')
-  //           .attr('x', x)
-  //           .attr('y', y - 60)
-  //           .text(text)
-  //           .style('font-family', 'arial')
-  //           .style('font-size', '12px')
-  //           .attr('text-anchor', 'middle')
-  //           .attr('dy', '0.35em');
-  //       });
-  //     }
-  //   });
-  // }
-
+  // function for adding annotations
   function addAnnotations(year) {
-  const svg = d3.select('#circles');
-  annotations.forEach((annotation) => {
-    if (annotation.year === year) {
-      annotation.annotations.forEach((a) => {
-        const { text, x, y } = a;
-        const annotationGroup = svg.append('g').attr('class', 'annotation');
-        // annotationGroup
-        //   .append('line')
-        //   .attr('x1', x)
-        //   .attr('y1', y)
-        //   .attr('x2', x)
-        //   .attr('y2', y - 50)
-        //   .attr('stroke', 'black');
-        // Use foreignObject to create multiline text
-        const foreignObject = annotationGroup
-          .append('foreignObject')
-          .attr('x', x)
-          .attr('y', y)
-          .attr('width', 160) // adjust width as needed
-          .attr('height', 200); // adjust height as needed
-        foreignObject
-          .append('xhtml:div')
-          .style('font-family', 'times new roman')
-          .style('font-size', '14px')
-          .style('text-anchor', 'middle')
-          //.style('color', 'white')
-          .html(text); // Insert HTML content for multiline text
-      });
-    }
-  });
-}
+    const svg = d3.select('#circles');
+    annotations.forEach((annotation) => {
+      if (annotation.year === year) {
+        annotation.annotations.forEach((a) => {
+          const { text, x, y } = a;
+          const annotationGroup = svg.append('g').attr('class', 'annotation');
+          const foreignObject = annotationGroup
+            .append('foreignObject')
+            .attr('x', x)
+            .attr('y', y)
+            .attr('width', 160)
+            .attr('height', 200);
+          foreignObject
+            .append('xhtml:div')
+            .style('font-family', 'times new roman')
+            .style('font-size', '14px')
+            .style('text-anchor', 'middle')
+            .html(text);
+        });
+      }
+    });
+  }
 
-
+  // automation - play
   function startAnimation() {
     if (!isPlaying) {
       isPlaying = true;
       animationTimer = setInterval(() => {
-        currentYear += 4; // Increment year by 4 for every step
+        currentYear += 4;
         if (currentYear > 2008) {
-          currentYear = 1976; // Reset to the initial year if it reaches the end
+          currentYear = 1976;
         }
         updateCircles(currentYear);
         updateLabel(currentYear);
         d3.selectAll('.annotation').remove();
         addAnnotations(currentYear);
-      }, 1500); // Set interval to 1 second
+      }, 1500);
     }
   }
 
+  // automation - stop
   function stopAnimation() {
     isPlaying = false;
     clearInterval(animationTimer);
   }
-  
 
   onMount(() => {
     const svg = d3.select('#circles');
-    // Create circles initially
     svg
       .selectAll('circle')
       .data(bubbleData[currentYear])
@@ -236,7 +213,6 @@
       .attr('r', (d) => Math.sqrt(d.val) / Math.PI)
       .attr('fill', (d) => d.color);
 
-    // Append text labels initially
     svg
       .selectAll('.source')
       .data(bubbleData[currentYear])
@@ -244,14 +220,14 @@
       .append('text')
       .attr('class', 'source')
       .attr('x', (d) => d.x)
-      .attr('y', (d) => d.y) // Positioned in the middle of the circle
+      .attr('y', (d) => d.y)
       .text((d) => d.source)
       .style('font-family', 'arial')
       .style('font-size', '12px')
       .attr('text-anchor', 'middle')
       .attr('dy', '0.35em');
 
-    updateCircles(currentYear); // Initially update circles with the current year
+    updateCircles(currentYear);
 
     addAnnotations(currentYear);
   });
@@ -262,7 +238,7 @@
   }
 </script>
 
-<svg style="width: 100%; height: 100%;">
+<svg style="width: 100%; height: 100%; margin-top: -40px">
   <g id="circles"></g>
   <g id="legend" transform="translate(1200,15)">
     <circle cx="5" cy="5" r="8" fill="#266DE1"></circle>
@@ -305,11 +281,10 @@
     <text x="15" y="190" style="font-family: times new roman; font-size: 15px;"
       >Volleyball</text
     >
-    <!-- Add more rectangles and text labels as needed -->
   </g>
 </svg>
-
 <div style="position: relative; margin-top: -350px;">
+  <br />
   <div style="position: absolute; left: 40%;">
     <span>{label}</span>
     <input
@@ -321,14 +296,13 @@
       on:input={() => {
         updateCircles(currentYear);
         updateLabel(currentYear);
-        // Remove existing annotations before adding new ones
         d3.selectAll('.annotation').remove();
         addAnnotations(currentYear);
       }}
     />
 
     <button
-    style="padding: 5px 15px; background-color: black; color: white; border: none; border-radius: 6px; cursor: pointer;"
+      style="padding: 5px 15px; background-color: black; color: white; border: none; border-radius: 6px; cursor: pointer;"
       on:click={() => {
         isPlaying ? stopAnimation() : startAnimation();
       }}
@@ -337,5 +311,3 @@
     </button>
   </div>
 </div>
-
-
