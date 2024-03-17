@@ -475,7 +475,11 @@
   }
   .intro-page {
     font-size: 20px;
-    background-image: url('/b.jpeg');
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(21, 156, 190, 0.5),
+      rgba(92, 172, 247, 0.5)
+    );
     background-size: cover;
     background-position: center;
   }
@@ -561,7 +565,11 @@
   }
 
   .conclusion {
-    background-image: url('/b.jpeg');
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(21, 156, 190, 0.5),
+      rgba(92, 172, 247, 0.5)
+    );
     background-size: cover;
     background-position: center;
   }
